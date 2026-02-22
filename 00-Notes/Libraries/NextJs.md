@@ -105,7 +105,7 @@ NextJS is a **React Framework** that adds:
 
 ---
 
-# 4 Client-Side Rendering (CSR)
+# 4. Client-Side Rendering (CSR)
 
 ## What is CSR?
 - The browser renders the page after downloading and executing JavaScript.
@@ -134,3 +134,62 @@ export default function App()
 </body>
 ```
 Content appears only after Javascript runs.
+
+# 5. Server-Side Rendering (SSR)
+
+## What is SSR?
+- The HTML is generated on the server for every request.
+- The fully rendered pages is sent to the browser.
+- The browser displays content immediately.
+- React then hydrates the page to make it interactice
+
+> **Hydrate:** React attaches event listeners and makes the already rendered HTML interactive.
+
+## How SSR Works
+ 1. User requests a page
+ 2. Server runs React code
+ 3. Server generates complete HTML
+ 4. Browser receives **ready to render** HTML
+ 5. React hydrates the page (adds interactivity)
+
+## Why SSR is Important
+- Better SEO (search engines receive full HTML)
+- Faster initial content display
+- Improved performance for public pages
+- Better for content heavy websites
+
+## SSR in NextJS (App Router)
+By default, components in the `app` directory are **Server Components**.
+
+```jsx
+// app/page.js
+export default async function Page() {
+  const res = await fetch("https://api.example.com/data");
+  const data = await res.json();
+
+  return <h1>{data.title}</h1>;
+}
+```
+This runs on the server and sends rendered HTML to the browser
+
+## Converting SSR to CSR using "use client"
+- if we add `"use client";` at the top of a component:
+    - It becomes a **Client Component**
+    - It runs in the browser
+    - It behaves like traditional CSR
+
+```
+"use client";
+
+import { useState } from "react";
+
+export default function Page() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      {count}
+    </button>
+  );
+}
+```
